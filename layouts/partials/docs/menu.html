@@ -27,7 +27,7 @@
   {{ $parts := split $relURL "/" }}
   {{ $product := index $parts 1 }}
   {{ if $product }}
-      <a class="download-btn" href="https://release.infinilabs.com/{{ $product }}">Download</a>
+      <a class="download-btn" href="https://release.infinilabs.com/{{ $product }}/">Download</a>
   {{ else }}
       <a class="download-btn" href="https://release.infinilabs.com/">Download</a>
   {{ end }}
