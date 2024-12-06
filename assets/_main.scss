@@ -390,3 +390,35 @@ aside nav,
   border-radius: .25rem;
   cursor: pointer;
 }
+
+
+img{
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+}
+
+
+.book-brand {
+  position: relative;
+  display: inline-block;
+}
+
+.book-brand::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -0px;
+  right: -5px;
+  bottom: -5px;
+  background: rgba(255, 255, 255, 0.4);
+  filter: blur(8px);
+  z-index: -1;
+  border-radius: 30%; /* Optional, for rounded glow */
+}
+
+.img-link a img{
+  background: #ffffff !important;
+}
+
+.book-footer{
+  clear: both;
+}
