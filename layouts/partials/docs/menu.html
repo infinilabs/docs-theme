@@ -22,18 +22,6 @@
   {{ partial "docs/languages" . }}
   {{ end }}
 
-<ul>
-  {{ $relURL := .RelPermalink }}
-  {{ $parts := split $relURL "/" }}
-  {{ $product := index $parts 1 }}
-  {{ if $product }}
-      <a class="download-btn" href="https://release.infinilabs.com/{{ $product }}/">Download</a>
-  {{ else }}
-      <a class="download-btn" href="https://release.infinilabs.com/">Download</a>
-  {{ end }}
-</ul>
-
-
 </nav>
 
 <!-- Restore menu position as soon as possible to avoid flickering -->
