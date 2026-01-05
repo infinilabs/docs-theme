@@ -83,6 +83,10 @@ ul.pagination {
 .book-icon {
   filter: var(--icon-filter);
 }
+img.book-icon {
+  font-size: 0.875rem;
+  width: 1rem;
+}
 
 .book-brand {
   margin-top: 0;
@@ -124,6 +128,57 @@ ul.pagination {
 
   input.toggle:checked + label + ul {
     display: block;
+  }
+
+  input.toggle:checked + label > span.expand-icon svg:last-child {
+    transform: rotate(90deg);
+  }
+  input.toggle:checked + label + ul {
+    border-left: 1px solid #dee2e6;
+  }
+  input.toggle:checked + label {
+    background-color: #E5F0FE;
+    color:#245BA8;
+    font-weight: 500;
+    border-radius: 4px;
+  }
+
+  nav ul >li >a.active {
+    color: #8440f1;
+    background-color: oklch(96.7% 0.003 264.542);
+    border-radius: 4px;
+  }
+
+  ul li {
+    margin: 0.2rem 0;
+  }
+  ul li > a {
+    padding: 6px 8px;
+    &:hover {
+      background-color: oklch(96.7% 0.003 264.542);
+      color: blue;
+      border-radius: 4px;
+    }
+  }
+  ul li > label {
+    padding: 6px 8px;
+    &:hover {
+      background-color: oklch(96.7% 0.003 264.542);
+      color:blue;
+      border-radius: 4px;
+    }
+  }
+  nav > .heading {
+    margin-bottom: 1em;
+    .version-selector {
+      padding-top: .25rem;
+      padding-bottom: .25rem;
+      padding-left: .5rem;
+      font-size: .875rem;
+      border-radius: .25rem;
+      width: 100%;
+      border: 1px solid #dee2e6;
+    }
   }
 }
 
@@ -213,7 +268,9 @@ ul.pagination {
     width: $toc-width;
     padding: $padding-16;
 
+
     @include fixed;
+    top: 50px;
   }
 
   img {
@@ -222,6 +279,13 @@ ul.pagination {
 
   nav > ul > li:first-child {
     margin-top: 0;
+  }
+
+  .toc-header {
+    @include fixed;
+  }
+  #TableOfContents { 
+    border-left: 1px solid #dee2e6;
   }
 }
 
@@ -242,6 +306,7 @@ ul.pagination {
 .book-languages {
   position: relative;
   overflow: visible;
+  margin-top: 10px;
 
   ul {
     margin: 0;
@@ -251,6 +316,8 @@ ul.pagination {
     li {
       white-space: nowrap;
       cursor: pointer;
+      margin: .875rem 0;
+      gap: 7px;
     }
   }
 
@@ -284,6 +351,7 @@ ul.pagination {
     a {
       color: inherit;
       padding: $padding-1 $padding-8;
+      gap: 7px;
     }
   }
 }
@@ -321,6 +389,9 @@ aside nav,
 
   .book-header {
     display: block;
+  }
+  #TableOfContents {
+    border-left: none;
   }
 
   #menu-control:focus ~ main label[for="menu-control"] {
