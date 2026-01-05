@@ -8,3 +8,27 @@
 
 <div id="searchbox" style="margin-bottom: 10px;outline:none"></div>
 
+
+<script>
+  function waitForShadow(host, callback) {
+    const timer = setInterval(() => {
+      if (host.shadowRoot) {
+        clearInterval(timer);
+        callback(host.shadowRoot);
+      }
+    }, 50);
+  }
+  //优化 搜索按钮样式
+  const host = document.querySelector('#searchbox');
+  waitForShadow(host, (shadow) => {
+    const style = document.createElement('style');
+    style.textContent = `
+      .infini__searchbox-btn {
+        width: 100% !important;
+        height: 36px !important;
+      }
+    `;
+    shadow.appendChild(style);
+  });
+</script>
+

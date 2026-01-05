@@ -34,10 +34,10 @@
       <a {{ if .Page.Content }}href="{{ .Page.Permalink }}"{{ end }} class="{{ if $current }}active{{ end }}">
         {{- partial "docs/title" .Page -}}
       </a>
-      <span>▾</span>
+      <span class="expand-icon flex justify-between align-center" ><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" height="12" class="x:shrink-0 x:rounded-sm x:p-0.5 x:hover:bg-gray-800/5 x:dark:hover:bg-gray-100/5 x:motion-reduce:transition-none x:origin-center x:transition-all x:rtl:-rotate-180"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
     </label>
   {{ else if .Page.Content }}
-    <a href="{{ .Page.Permalink }}" class="{{ if $current }} active{{ end }}">
+    <a href="{{ .Page.Permalink }}" class="{{ if $current }} active {{ end }}">
       {{- partial "docs/title" .Page -}}
     </a>
   {{ else }}
