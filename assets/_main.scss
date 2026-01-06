@@ -284,7 +284,9 @@ img.book-icon {
   .toc-header {
     @include fixed;
   }
-  #TableOfContents { 
+  #TableOfContents > ul { 
+    margin-left: -15px;
+    padding-left: 15px;
     border-left: 1px solid #dee2e6;
   }
 }
