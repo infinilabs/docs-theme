@@ -166,7 +166,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // 如果当前处于程序化滚动中，且 candidate 不是我们要滚动到的目标，则忽略（避免中间节点覆盖）
       if (isProgrammatic && programmaticTargetId && foundId !== programmaticTargetId) {
-        console.log('Ignoring IO update during programmatic scroll. candidate:', foundId, 'targeting:', programmaticTargetId);
         return;
       }
 
