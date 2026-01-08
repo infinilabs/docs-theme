@@ -1,12 +1,192 @@
 <style>
 .toc-header {
-  font-weight: 500;
   margin-bottom: 8px;
   margin-top:20px;
   height: 24px;
   gap:7px;
+  span {
+    font-weight: 500;
+  }
+}
+#TableOfContents a {
+  color: #8440f1;
 }
 </style>
+
+<style>
+
+/* 默认不显示指示器  */
+.book-toc > nav li::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  width: 2px;
+  height: 32px;
+  top: 6px;
+  transform: translateY(-50%) scaleY(0);
+  background: transparent;
+  opacity: 0;
+  transition: transform .28s cubic-bezier(.2,.8,.2,1), background-color .18s ease, opacity .18s;
+}
+
+.book-toc > nav > ul > li.ancestor::before {
+  left: -16px;
+}
+
+.book-toc > nav > ul > li.ancestor > ul > li.active::before {
+  left: -32px;
+}
+
+.book-toc > nav > ul > li.ancestor > ul > li.ancestor::before {
+  left: -32px;
+}
+
+.book-toc > nav > ul > li.ancestor >  ul > li.ancestor > ul > li.active::before {
+  left: -48px;
+}
+
+
+
+/* 仅在 active 或 ancestor 时显示 */
+.book-toc > nav li.active::before,
+.book-toc > nav li.ancestor::before {
+  background: #8440f1; /* 高亮色，可按主题调整 */
+  transform: translateY(-50%) scaleY(1);
+  opacity: 1;
+}
+
+/* 当前项更醒目 */
+.book-toc > nav li.active > a { font-weight: 500; }
+/* 祖先项样式（稍淡）*/
+.book-toc > nav li.ancestor > a { font-weight: 500;}
+
+/* 避免固定头遮挡锚点 */
+:target { scroll-margin-top: 80px; }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const nav = document.getElementsByClassName('book-toc')[0].querySelector('nav');
+  if (!nav) return;
+
+  const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+  const idToLi = new Map();
+
+  // 程序化滚动控制变量
+  let isProgrammatic = false;
+  let programmaticTargetId = null;
+  let scrollEndTimer = null;
+
+  links.forEach(link => {
+    const href = link.getAttribute('href');
+    if (!href || href.length < 2) return;
+    const id = decodeURIComponent(href.slice(1));
+    const li = link.closest('li');
+    if (li) idToLi.set(id, li);
+
+    link.addEventListener('click', function (e) {
+      const target = document.getElementById(id);
+      if (target) {
+        e.preventDefault();
+
+        // 标记为程序化滚动，记录目标 id
+        isProgrammatic = true;
+        programmaticTargetId = id;
+
+        // 立即设置高亮（避免 IO 干扰）
+        setActiveById(id);
+
+        // 启动平滑滚动
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', '#' + id);
+
+        // 作为兜底：若滚动事件无法触发结束检测，maxTimeout 后清理
+        clearTimeout(scrollEndTimer);
+        scrollEndTimer = setTimeout(() => {
+          isProgrammatic = false;
+          programmaticTargetId = null;
+        }, 1200);
+      }
+    });
+  });
+
+  // 当用户或程序滚动停止时，清理程序化滚动标记
+  window.addEventListener('scroll', function () {
+    clearTimeout(scrollEndTimer);
+    // 在滚动停止后 120ms 认为滚动完成
+    scrollEndTimer = setTimeout(() => {
+      isProgrammatic = false;
+      programmaticTargetId = null;
+    }, 120);
+  }, { passive: true });
+
+  function clearAll() {
+    idToLi.forEach(li => li.classList.remove('active', 'ancestor'));
+    links.forEach(a => a.removeAttribute('aria-current'));
+  }
+
+  function setActiveById(id) {
+    clearAll();
+    const li = idToLi.get(id);
+    
+    if (!li) return;
+    li.classList.add('active');
+    const a = li.querySelector('a[href^="#"]');
+    if (a) a.setAttribute('aria-current', 'true');
+
+    // 标记祖先 li（仅向上到最近的 li 层级）
+    let parent = li.parentElement;
+    while (parent && parent !== nav) {
+      const parentLi = parent.closest('li');
+      if (parentLi && parentLi !== li) parentLi.classList.add('ancestor');
+      parent = parent.parentElement;
+    }
+  }
+
+  // 只观察在 TOC 中存在对应锚点的文档元素
+  const observedEls = Array.from(idToLi.keys()).map(id => document.getElementById(id)).filter(Boolean);
+  
+  if (observedEls.length) {
+    const io = new IntersectionObserver((entries) => {
+      // 选出视口中最靠近顶部的 isIntersecting 元素
+      let candidate = null;
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        if (!candidate) candidate = en;
+        else {
+          const curTop = Math.abs(candidate.boundingClientRect.top);
+          const newTop = Math.abs(en.boundingClientRect.top);
+          if (newTop < curTop) candidate = en;
+        }
+      });
+
+      if (!candidate || !candidate.target || !candidate.target.id) return;
+
+      const foundId = candidate.target.id;
+
+      // 如果当前处于程序化滚动中，且 candidate 不是我们要滚动到的目标，则忽略（避免中间节点覆盖）
+      if (isProgrammatic && programmaticTargetId && foundId !== programmaticTargetId) {
+        return;
+      }
+
+      // 通过 IO 设置高亮
+      setActiveById(foundId);
+    }, {
+      root: null,
+      rootMargin: '-30% 0% -50% 0%',
+      threshold: [0, 0.1, 0.25, 0.5]
+    });
+
+    observedEls.forEach(el => io.observe(el));
+  }
+
+  // 初始 hash 激活
+  if (location.hash) {
+    const id = decodeURIComponent(location.hash.slice(1));
+    if (idToLi.has(id)) setTimeout(() => setActiveById(id), 120);
+  }
+});
+</script>
 
 <div class="toc-header flex justify-start align-center">
     <svg width="14"viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3"><path d="M2.44434 12.6665H13.5554" stroke-linecap="round" stroke-linejoin="round"></path><path d="M2.44434 3.3335H13.5554" stroke-linecap="round" stroke-linejoin="round"></path><path d="M2.44434 8H7.33323" stroke-linecap="round" stroke-linejoin="round"></path></svg>
