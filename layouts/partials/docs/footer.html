@@ -50,6 +50,31 @@
 
 </div>
 
+{{ $g := .Site.Params.giscus }}
+{{ if and $g (or (eq $g.enable true) (eq $g.enable "true")) }}
+<div style="padding:20px 0">
+  <h2><strong>{{ if eq .Lang "zh" }}评论{{ else }}Comments{{ end }}</strong></h2>
+    <div class="giscus-container">
+      <script src="https://giscus.app/client.js"
+            data-repo="{{ $g.config.repo }}"
+            data-repo-id="{{ $g.config.repoID }}"
+            data-category="{{ $g.config.category }}"
+            data-category-id="{{ $g.config.categoryID }}"
+            data-mapping="{{ $g.config.mapping }}"
+            data-strict="{{ $g.config.strict }}"
+            data-reactions-enabled="{{ $g.config.reactionsEnabled }}"
+            data-emit-metadata="{{ $g.config.emitMetadata }}"
+            data-input-position="{{ $g.config.inputPosition }}"
+            data-theme="{{ $g.config.theme }}"
+            data-lang="{{ $g.config.lang }}"
+            data-loading="{{ $g.config.loading }}"
+            crossorigin="{{ $g.config.crossorigin }}"
+            async>
+      </script>
+    </div>
+  </div>
+{{ end }}
+
 <script type="module" >
     import { searchbox } from "https://coco.infini.cloud/integration/cvn0g9ehpcehvsthrakg/widget";
     searchbox({container: "#searchbox"});
