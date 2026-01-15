@@ -66,7 +66,7 @@
             data-emit-metadata="{{ $g.config.emitMetadata }}"
             data-input-position="{{ $g.config.inputPosition }}"
             data-theme="{{ $g.config.theme }}"
-            data-lang="{{ $g.config.lang }}"
+            data-lang='{{ if eq .Lang "zh" }}zh-CN{{ else }}en{{ end }}'
             data-loading="{{ $g.config.loading }}"
             crossorigin="{{ $g.config.crossorigin }}"
             async>
