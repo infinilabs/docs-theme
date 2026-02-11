@@ -1,0 +1,118 @@
+<style>
+  /* ===== 外层包裹 ===== */
+.code-wrapper {
+  position: relative;
+  margin: 20px 0;
+}
+
+/* ===== 顶部 header ===== */
+.code-header {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  font-size: 12px;
+  color: #8be9fd;  /* Dracula 青色 */
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: lowercase;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+/* ===== pre 基础 ===== */
+.code-wrapper pre {
+  padding: 28px 18px 18px 18px;
+  border-radius: 12px;
+  overflow-x: auto;
+  line-height: 1.7;
+}
+
+/* ===== Copy 按钮 ===== */
+.copy-btn {
+  position: absolute;
+  top: 6px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 8px;
+
+  background: #44475a;
+  color: #f8f8f2;
+  border: 1px solid #8440f1;
+
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+/* hover 时隐藏语言，显示 Copy */
+.code-wrapper:hover .copy-btn {
+  opacity: 1;
+}
+
+.code-wrapper:hover .code-header {
+  opacity: 0.2;
+}
+
+/* hover 按钮 */
+.copy-btn:hover {
+  background: #6272a4;
+}
+
+/* 成功状态 */
+.copy-btn.copied {
+  background: #ffffff;
+  color: #8440f1;
+  border-color: #8440f1;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("pre > code").forEach((codeBlock) => {
+
+    const pre = codeBlock.parentElement;
+
+    // 获取语言类型
+    const className = codeBlock.className;
+    const match = className.match(/language-(\w+)/);
+    const language = match ? match[1] : "code";
+
+    // 创建 wrapper
+    const wrapper = document.createElement("div");
+    wrapper.className = "code-wrapper";
+
+    pre.parentNode.insertBefore(wrapper, pre);
+    wrapper.appendChild(pre);
+
+    // 创建语言标签
+    const header = document.createElement("div");
+    header.className = "code-header";
+    header.innerText = language;
+    wrapper.appendChild(header);
+
+    // 创建 copy 按钮
+    const button = document.createElement("button");
+    button.className = "copy-btn";
+    button.innerHTML = "Copy";
+
+    button.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(codeBlock.innerText);
+
+      button.classList.add("copied");
+      button.innerText = "✓ Copied";
+
+      setTimeout(() => {
+        button.classList.remove("copied");
+        button.innerText = "Copy";
+      }, 2000);
+    });
+
+    wrapper.appendChild(button);
+  });
+});
+</script>
