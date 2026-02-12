@@ -151,6 +151,10 @@ img.book-icon {
     border-left-color: #8440f1;
   }
 
+  nav input.toggle:checked + label + ul > li {
+    margin-left: -7px;
+  }
+
   ul li {
     margin: 0.2rem 0;
   }
