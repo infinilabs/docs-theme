@@ -36,6 +36,12 @@
 
     {{ if default true (default .Site.Params.BookToC .Params.BookToC) }}
     <aside class="book-toc">
+      <a href="{{ .RelPermalink }}index.md" class="view-markdown" target="_blank">
+        <img src="/svg/markdown.svg" />
+
+        <span>查看 Markdown</span>
+      </a>
+
       {{ template "toc" . }} <!-- Table of Contents -->
     </aside>
     {{ end }}
@@ -44,7 +50,7 @@
   {{ partial "docs/inject/body" . }}
 
   {{ if .Params.asciinema }}
-    <script src="{{ .Site.BaseURL }}/js/asciinema-player.js"></script>
+  <script src="{{ .Site.BaseURL }}/js/asciinema-player.js"></script>
   {{ end }}
 
 </body>
@@ -52,37 +58,37 @@
 </html>
 
 {{ define "menu" }}
-  {{ partial "docs/menu" . }}
+{{ partial "docs/menu" . }}
 {{ end }}
 
 {{ define "header" }}
-  {{ partial "docs/header" . }}
+{{ partial "docs/header" . }}
 
-  {{ if default true (default .Site.Params.BookToC .Params.BookToC) }}
-  <aside class="hidden clearfix">
-    {{ template "toc" . }}
-  </aside>
-  {{ end }}
+{{ if default true (default .Site.Params.BookToC .Params.BookToC) }}
+<aside class="hidden clearfix">
+  {{ template "toc" . }}
+</aside>
+{{ end }}
 {{ end }}
 
 {{ define "footer" }}
-  {{ partial "docs/footer" . }}
+{{ partial "docs/footer" . }}
 {{ end }}
 
 {{ define "comments" }}
-  {{ if and .Content (default true (default .Site.Params.BookComments .Params.BookComments)) }}
-  <div class="book-comments">
-    {{- partial "docs/comments" . -}}
-  </div>
-  {{ end }}
+{{ if and .Content (default true (default .Site.Params.BookComments .Params.BookComments)) }}
+<div class="book-comments">
+  {{- partial "docs/comments" . -}}
+</div>
+{{ end }}
 {{ end }}
 
 {{ define "main" }}
-  <article class="markdown">
-    {{- .Content -}}
-  </article>
+<article class="markdown">
+  {{- .Content -}}
+</article>
 {{ end }}
 
 {{ define "toc" }}
-  {{ partial "docs/toc" . }}
+{{ partial "docs/toc" . }}
 {{ end }}
