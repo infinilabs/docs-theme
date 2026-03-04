@@ -1,0 +1,12 @@
+# {{ .Site.Title }}
+
+> {{ .Site.Params.description | default "AI-friendly index of site content." }}
+
+## Core Content
+{{- range .Site.RegularPages }}
+- [{{ .Title }}]({{ .Permalink }}): {{ .Params.excerpt | default .Summary | plainify | truncate 200 }}
+{{- end }}
+
+## Other Resources
+- [Sitemap]({{ "sitemap.xml" | absURL }}): Full machine-readable sitemap.
+- [RSS Feed]({{ "index.xml" | absURL }}): Latest updates and posts.

@@ -13,3 +13,11 @@
 </div>
 
 {{ partial "docs/markdown-copy-btn" . }}
+
+{{ with .OutputFormats.Get "markdown" }}
+<div class="mt-2 text-right">
+  <a href="{{ .RelPermalink }}" class="text-sm">
+    View as Markdown
+  </a>
+</div>
+{{ end }}
