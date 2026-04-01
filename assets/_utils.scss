@@ -90,3 +90,10 @@ input.toggle {
   outline-color: currentColor;
   outline-color: -webkit-focus-ring-color;
 }
+
+@mixin sticky($top: 0) {
+  position: sticky;
+  top: $top;
+  overflow-x: hidden;
+  overflow-y: auto;
+}

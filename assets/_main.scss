@@ -122,7 +122,9 @@ img.book-icon {
 
     background: var(--body-background);
 
-    @include fixed;
+    max-height: 100vh;
+
+    @include sticky;
   }
 
   a,
@@ -322,16 +324,19 @@ img.book-icon {
 
   font-size: $font-size-12;
 
-  .view-markdown {
-    top: 1rem !important;
+  max-height: 100vh;
 
+  @include sticky;
+
+  .view-markdown {
     display: flex;
     align-items: center;
 
     height: 24px;
 
-    @include fixed;
     gap: 4px;
+
+    margin: 1rem 0 0.5rem 0;
 
     img {
       width: 20px;
@@ -347,12 +352,8 @@ img.book-icon {
   }
 
   nav {
-    top: 4.5rem !important;
-
     width: $toc-width;
     padding: $padding-16;
-
-    @include fixed;
 
     a {
       color: #8440f1;
@@ -368,12 +369,9 @@ img.book-icon {
   }
 
   .toc-header {
-    top: 3rem !important;
-
     height: 24px;
 
     gap: 7px;
-    @include fixed;
 
     span {
       font-weight: 500;
