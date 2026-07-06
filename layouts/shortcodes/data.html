@@ -1,0 +1,6 @@
+{{- $keys := split (.Get 0) "." -}}
+{{- $value := .Site.Data -}}
+{{- range $keys -}}
+  {{- $value = index $value . -}}
+{{- end -}}
+{{- $value -}}
