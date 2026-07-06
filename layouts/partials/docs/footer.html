@@ -1,50 +1,52 @@
 <div class="flex flex-wrap justify-between">
-{{ if .Site.IsMultiLingual }}
+  {{ if .Site.IsMultiLingual }}
   {{ partial "docs/languages" . }}
-{{ end }}
+  {{ end }}
 
-{{ if and .GitInfo .Site.Params.BookRepo }}
+  {{ if and .GitInfo .Site.Params.BookRepo }}
   <div>
     {{- $date := partial "docs/date" (dict "Date" .GitInfo.AuthorDate.Local "Format" .Site.Params.BookDateFormat) -}}
-    <a class="flex align-center" href="{{ .Site.Params.BookRepo }}/commit/{{ .GitInfo.Hash }}" title='{{ i18n "Last modified by" }} {{ .GitInfo.AuthorName }} | {{ $date }}' target="_blank" rel="noopener">
-      <img src="{{ "svg/calendar.svg" | relURL }}" class="book-icon" alt="Calendar" />
+    <a class="flex align-center" href="{{ .Site.Params.BookRepo }}/commit/{{ .GitInfo.Hash }}"
+      title='{{ i18n "Last modified by" }} {{ .GitInfo.AuthorName }} | {{ $date }}' target="_blank" rel="noopener">
+      <img src="{{ " svg/calendar.svg" | relURL }}" class="book-icon" alt="Calendar" />
       <span>{{ $date }}</span>
     </a>
   </div>
-{{ end }}
+  {{ end }}
 
-{{ if and .File .Site.Params.BookRepo .Site.Params.BookEditPath }}
+  {{ if and .File .Site.Params.BookRepo .Site.Params.BookEditPath }}
   <div>
-    <a class="flex align-center" href="{{ .Site.Params.BookRepo }}/{{ .Site.Params.BookEditPath }}/{{ .Site.Params.contentDir }}/{{ replace .File.Path "\\" "/" }}" target="_blank" rel="noopener">
-      <img src="{{ "svg/edit.svg" | relURL }}" class="book-icon" alt="Edit" />
+    <a class="flex align-center"
+      href="{{ .Site.Params.BookRepo }}/{{ .Site.Params.BookEditPath }}/{{ .Site.Params.contentDir }}/{{ replace .File.Path "\\" "/" }}" target="_blank" rel="noopener">
+      <img src="{{ " svg/edit.svg" | relURL }}" class="book-icon" alt="Edit" />
       <span>{{ i18n "Edit this page" }}</span>
     </a>
   </div>
-{{ end }}
+  {{ end }}
 
-  <div class="flex align-center footer" >
+  <div class="flex align-center footer">
     ©INFINI.LTD, All Rights Reserved.
   </div>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RJPTVP614C"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RJPTVP614C"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-  gtag('config', 'G-RJPTVP614C');
-</script>
+    gtag('config', 'G-RJPTVP614C');
+  </script>
 
   <!-- Smartsupp Live Chat script -->
   <script type="text/javascript">
     var _smartsupp = _smartsupp || {};
     _smartsupp.key = '691ff544d18a237005a011a7290b839d8fe811a4';
-    window.smartsupp||(function(d) {
-      var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
-      s=d.getElementsByTagName('script')[0];c=d.createElement('script');
-      c.type='text/javascript';c.charset='utf-8';c.async=true;
-      c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+    window.smartsupp || (function (d) {
+      var s, c, o = smartsupp = function () { o._.push(arguments) }; o._ = [];
+      s = d.getElementsByTagName('script')[0]; c = d.createElement('script');
+      c.type = 'text/javascript'; c.charset = 'utf-8'; c.async = true;
+      c.src = 'https://www.smartsuppchat.com/loader.js?'; s.parentNode.insertBefore(c, s);
     })(document);
   </script>
 
@@ -54,28 +56,22 @@
 {{ if and $g (or (eq $g.enable true) (eq $g.enable "true")) }}
 <div style="padding:20px 0">
   <h2><strong>{{ if eq .Lang "zh" }}评论{{ else }}Comments{{ end }}</strong></h2>
-    <div class="giscus-container">
-      <script src="https://giscus.app/client.js"
-            data-repo="{{ $g.config.repo }}"
-            data-repo-id="{{ $g.config.repoID }}"
-            data-category="{{ $g.config.category }}"
-            data-category-id="{{ $g.config.categoryID }}"
-            data-mapping="{{ $g.config.mapping }}"
-            data-strict="{{ $g.config.strict }}"
-            data-reactions-enabled="{{ $g.config.reactionsEnabled }}"
-            data-emit-metadata="{{ $g.config.emitMetadata }}"
-            data-input-position="{{ $g.config.inputPosition }}"
-            data-theme="{{ $g.config.theme }}"
-            data-lang='{{ if eq .Lang "zh" }}zh-CN{{ else }}en{{ end }}'
-            data-loading="{{ $g.config.loading }}"
-            crossorigin="{{ $g.config.crossorigin }}"
-            async>
+  <div class="giscus-container">
+    <script src="https://giscus.app/client.js" data-repo="{{ $g.config.repo }}" data-repo-id="{{ $g.config.repoID }}"
+      data-category="{{ $g.config.category }}" data-category-id="{{ $g.config.categoryID }}"
+      data-mapping="{{ $g.config.mapping }}" data-strict="{{ $g.config.strict }}"
+      data-reactions-enabled="{{ $g.config.reactionsEnabled }}" data-emit-metadata="{{ $g.config.emitMetadata }}"
+      data-input-position="{{ $g.config.inputPosition }}" data-theme="{{ $g.config.theme }}"
+      data-lang='{{ if eq .Lang "zh" }}zh-CN{{ else }}en{{ end }}' data-loading="{{ $g.config.loading }}"
+      crossorigin="{{ $g.config.crossorigin }}" async>
       </script>
-    </div>
   </div>
+</div>
 {{ end }}
 
-<script type="module" >
-    import { searchbox } from "https://coco.infini.cloud/integration/cvn0g9ehpcehvsthrakg/widget";
-    searchbox({container: "#searchbox"});
+{{ if and .Site.Params.BookSearchBox .Site.Params.BookSearchWidget }}
+<script type="module">
+  import { searchbox } from "{{ .Site.Params.BookSearchWidget }}";
+  searchbox({ container: "#searchbox" });
 </script>
+{{ end }}
